@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct ItemAdd: View {
+struct TaskAdd: View {
     var body: some View {
         Text("Legg til oppgave") 
     }
 }
 
 #Preview {
-    ItemAdd()
+    TaskAdd()
 }

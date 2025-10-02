@@ -9,16 +9,21 @@ import SwiftUI
 import SwiftData
 
 struct MainView: View {
-
+    @Environment(\.modelContext) private var context
+    
     var body: some View
     {
         TabView {
             StartView().tabItem {
                 Label("Start", systemImage: "house")
             }
+            .task {
+                // Her sjekkes det om default-kateogrien finnes før første View blir vist på skjermen, hvis ikke lages kategorien
+                _ = try? CategoryModel.getOrCreateSystemCategory(in: context)
+            }
             
-            ItemAdd().tabItem {
-                Label("", systemImage: "plus") 
+            TaskAdd().tabItem {
+                Label("", systemImage: "plus")
             }
             
             SettingsView().tabItem {
