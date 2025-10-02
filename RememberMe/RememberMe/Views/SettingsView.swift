@@ -8,8 +8,25 @@
 import SwiftUI
 
 struct SettingsView: View {
-    var body: some View {
-        Text("Innstillinger") 
+    
+    @AppStorage("darkmode") private var darkMode: Bool = false
+    
+    var body: some View
+    {
+        NavigationStack
+        {
+            Form
+            {
+                Section()
+                {
+                    Toggle("Aktiver mørk modus",
+                           systemImage: darkMode ? "moon.zzz" : "moon.circle",
+                           isOn: $darkMode
+                    )
+                }
+            }
+            .navigationTitle("Innstillinger")
+        }
     }
 }
 

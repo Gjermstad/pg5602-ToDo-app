@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct StartView: View {
+struct TaskView: View {
     var body: some View {
         Text("Startskjermen") 
     }
 }
 
 #Preview {
-    StartView()
+    TaskView()
 }
