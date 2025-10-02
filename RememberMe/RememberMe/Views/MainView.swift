@@ -13,15 +13,13 @@ struct MainView: View {
     
     @AppStorage("darkmode") private var darkMode: Bool = false
     
+    @State private var showSheet = false
+    
     var body: some View
     {
         TabView {
             TaskView().tabItem {
                 Label("Oppgaver", systemImage: "list.bullet")
-            }
-            .task {
-                // Her sjekkes det om default-kateogrien finnes før første View blir vist på skjermen, hvis ikke lages kategorien
-                _ = try? CategoryModel.getOrCreateSystemCategory(in: context)
             }
             
             TaskAdd().tabItem {
@@ -33,6 +31,10 @@ struct MainView: View {
             }
         }
         .environment(\.colorScheme, darkMode ? .dark : .light)
+        .task {
+            // Her sjekkes det om default-kateogrien finnes før første View blir vist på skjermen, hvis ikke lages kategorien
+            _ = try? CategoryModel.getOrCreateSystemCategory(in: context)
+        }
     }
 }
 
