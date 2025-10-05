@@ -31,19 +31,23 @@ struct MainView: View {
                 Label("Innstillinger", systemImage: "gear")
             }.tag(3)
         }
-        .onChange(of: selectedTab, { oldvalue, newValue in
+        .onChange(of: selectedTab, {
+            // Her jukser vi til at Color.clear fungerer som en fake View som lar oss vise modalen
+            oldvalue, newValue in
+            
             if(newValue == 2) {
                 showSheet = true;
                 selectedTab = 0
             }
         })
-        .environment(\.colorScheme, darkMode ? .dark : .light)
+        .environment(\.colorScheme, darkMode ? .dark : .light) // Setter Dark Mode av/på
         .task {
-            // Her sjekkes det om default-kateogrien finnes før første View blir vist på skjermen, hvis ikke lages kategorien
+            // Her sjekkes det om default-kateogrien i CategoryModel finnes før første View blir vist på skjermen, hvis ikke lages kategorien ved oppstart
             _ = try? CategoryModel.getOrCreateSystemCategory(in: context)
         }
         .sheet(isPresented: $showSheet)
         {
+            // View for å legge til ny oppgave vises som modal istedenfor fullskjerm
             TaskAdd()
         }
     }
