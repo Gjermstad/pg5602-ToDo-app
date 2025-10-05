@@ -52,4 +52,5 @@ let exampleTask1 = TaskModel(
     subTitle: "Mamma har mast hele uken",
     category: defaultCategory,
     notes: "Planen er at jeg skal starte med å kaste alt på sengen, så legger jeg det i en søppelsekk og kaster det inn i kottet. Mamma ser aldri der, må bare vente til hun drar bort.",
+    priority: true
 )
