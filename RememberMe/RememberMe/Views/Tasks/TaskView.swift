@@ -6,12 +6,39 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TaskView: View
 {
+    @Query private var tasks: [TaskModel]
+    
     var body: some View
     {
-        Text("Startskjermen")
+        let filteredTasks = tasks.filter{!$0.archived}
+        
+        NavigationStack
+        {
+            Group
+            {
+                List
+                {
+                    ForEach(filteredTasks)
+                    {
+                        task in
+                        
+                        NavigationLink
+                        {
+                            
+                        }
+                    label:
+                        {
+                            Text(task.title)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Oppgaver")
+        }
     }
 }
 
