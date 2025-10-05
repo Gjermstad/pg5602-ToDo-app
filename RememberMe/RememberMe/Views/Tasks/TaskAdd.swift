@@ -19,6 +19,8 @@ struct TaskAdd: View
     @State private var title = ""
     @State private var selectedCategoryTitle: String = "Default"
     
+    @AppStorage("darkmode") private var darkMode: Bool = false
+    
     var body: some View
     {
         NavigationStack
@@ -72,6 +74,7 @@ struct TaskAdd: View
                 }
             }
         }
+        .environment(\.colorScheme, darkMode ? .dark : .light)
     }
 }
 
