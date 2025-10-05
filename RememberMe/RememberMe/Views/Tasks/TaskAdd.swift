@@ -71,6 +71,7 @@ struct TaskAdd: View
                         
                         dismiss()
                     }
+                    .disabled(title == "")
                 }
             }
         }
