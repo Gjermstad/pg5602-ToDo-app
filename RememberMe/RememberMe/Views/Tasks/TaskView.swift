@@ -20,19 +20,23 @@ struct TaskView: View
         {
             Group
             {
-                List
+                if(filteredTasks.isEmpty)
                 {
-                    ForEach(filteredTasks)
+                    EmptyView()
+                }
+                else
+                {
+                    List
                     {
-                        task in
-                        
-                        NavigationLink
-                        {
-                            
-                        }
-                    label:
-                        {
-                            Text(task.title)
+                        ForEach(filteredTasks) { task in
+                            NavigationLink
+                            {
+                                TaskEdit(task: task)
+                            }
+                            label:
+                            {
+                                TaskRow(task: task)
+                            }
                         }
                     }
                 }
@@ -43,5 +47,5 @@ struct TaskView: View
 }
 
 #Preview {
-    TaskView()
+    TaskView().modelContainer(for: [TaskModel.self, CategoryModel.self])
 }
