@@ -22,7 +22,8 @@ import SwiftData
     var createdAt: Date
     var updatedAt: Date
     
-    @Relationship(deleteRule: .deny, inverse: \TaskModel.category)
+    // VIKTIG: .cascade pga. mandatory inverse på TaskModel.category
+    @Relationship(deleteRule: .cascade, inverse: \TaskModel.category)
     var tasks: [TaskModel]?
     
     init(title: String, categoryDescription: String = "", color: String = "blue", icon: String = "list.bullet") {

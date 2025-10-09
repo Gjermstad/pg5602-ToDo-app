@@ -17,7 +17,12 @@ struct TaskAdd: View
     @Query(sort: \CategoryModel.title) var categories: [CategoryModel]
     
     @State private var title = ""
-    @State private var selectedCategoryTitle: String = "Default"
+    @State private var selectedCategoryTitle: String = "default"
+    @State private var startDate: Date = .now
+    @State private var dueDate: Date = .now
+    @State private var statusValue: Int8 = 0
+    @State private var note = ""
+    @State private var priority = false
     
     @AppStorage("darkmode") private var darkMode: Bool = false
     
@@ -29,19 +34,55 @@ struct TaskAdd: View
             
             Form
             {
-                Section
+                Section()
                 {
                     TextField("Tittel", text: $title)
+                    
+                    // Om det ikke er lagd egne kategorier vises ikke valget og "default" settes
+                    if (categories.count > 1)
+                    {
+                        Picker("Velg kategori", selection: $selectedCategoryTitle)
+                        {
+                            ForEach(visibleCategories)
+                            {
+                                category in
+                                if(category.title != "default")
+                                {
+                                    Text(category.title).tag(category.title)
+                                }
+                            }
+                        }
+                    }
                 }
                 
-                Picker("Velg kategori", selection: $selectedCategoryTitle)
+                Section("Status")
                 {
-                    Text("Ingen kategori").tag("default")
-                    ForEach(visibleCategories)
+                    Picker("Status", selection: $statusValue)
                     {
-                        category in
-                        Text(category.title).tag(category.title)
+                        ForEach(Status.allCases)
+                        {
+                            status in
+                            Text(status.title).tag(status)
+                        }
                     }
+                    .pickerStyle(.segmented)
+                }
+                
+                Section()
+                {
+                    DatePicker("Start oppgaven", selection: $startDate)
+                    DatePicker("Deadline", selection: $dueDate)
+                }
+                
+                Section("Notater om oppgaven")
+                {
+                    TextEditor(text: $note)
+                        .frame(minHeight: 80)
+                }
+                
+                Section()
+                {
+                    Toggle("Prioritert", systemImage: "light.beacon.max.fill", isOn: $priority)
                 }
             }
             .navigationTitle("Ny oppgave")
@@ -62,12 +103,21 @@ struct TaskAdd: View
                             return c
                         }()
                         
-                        let task = TaskModel(title: title, category: category)
+                        let newTask = TaskModel(title: title, category: category)
                         
-                        task.title = title
-                        task.category = category
+                        newTask.title = title
+                        newTask.category = category
                         
-                        context.insert(task)
+                        newTask.statusValue = statusValue
+                        
+                        newTask.startDate = startDate
+                        newTask.dueDate = dueDate
+                        
+                        newTask.notes = note
+                        
+                        newTask.priority = priority
+                        
+                        context.insert(newTask)
                         
                         dismiss()
                     }

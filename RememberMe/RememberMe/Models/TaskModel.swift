@@ -34,7 +34,11 @@ enum Status: Int8, CaseIterable, Identifiable
     var id: UUID
     var title: String
     var subTitle: String
+    
+    // VIKTIG: mandatory (ikke-optional)
+    @Relationship(inverse: \CategoryModel.tasks)
     var category: CategoryModel
+    
     var notes: String
     
     var startDate: Date

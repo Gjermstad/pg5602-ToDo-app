@@ -39,6 +39,7 @@ struct TaskEdit: View
                     TextField("Tittel", text: $title).bold()
                     TextField("Forklaring", text: $subtitle)
                 }
+                
                 Toggle("Prioritert", systemImage: "light.beacon.max.fill", isOn: $priority)
             }
             .navigationTitle("Rediger oppgave")

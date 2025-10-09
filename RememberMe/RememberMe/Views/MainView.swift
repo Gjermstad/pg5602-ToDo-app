@@ -81,5 +81,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView().modelContainer(for: [TaskModel.self, CategoryModel.self], inMemory: true)
+    MainView().modelContainer(for: [TaskModel.self, CategoryModel.self], inMemory: false)
 }
