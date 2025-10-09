@@ -17,9 +17,11 @@ struct TaskRow: View {
             VStack(alignment: .leading)
             {
                 Text(task.title).bold().font(.title2)
-                if(task.subTitle != "") {
-                    Text(task.subTitle)
-                }
+                Text("Frist: " + task.dueDate.formatted(.dateTime
+                    .day().month().year()
+                    .hour().minute()
+                    .locale(Locale(identifier: "nb_NO"))))
+                Text("Status: " + task.status.title)
             }
             
             Spacer()
