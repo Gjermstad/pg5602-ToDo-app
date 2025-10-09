@@ -8,9 +8,30 @@
 import Foundation
 import SwiftData
 
+enum Status: Int8, CaseIterable, Identifiable
+{
+    case notStarted = 0
+    case taskStarted = 1
+    case taskWaiting = 2
+    case taskFinished = 3
+    
+    var id: Int8 { rawValue }
+    
+    var title: String
+    {
+        switch self
+        {
+        case .notStarted: "Ikke startet"
+        case .taskStarted: "Påbegynt"
+        case .taskWaiting: "Venter"
+        case .taskFinished: "Fullført"
+        }
+    }
+}
+
 @Model final class TaskModel
 {
-    @Attribute(.unique) var id: UUID
+    var id: UUID
     var title: String
     var subTitle: String
     var category: CategoryModel
@@ -22,12 +43,24 @@ import SwiftData
     var createdAt: Date
     var updatedAt: Date
     
-    var status: Int8
+    var statusValue: Int8
+    var status: Status
+    {
+        get
+        {
+            Status(rawValue: statusValue) ?? .notStarted
+        }
+        
+        set(newValue)
+        {
+            statusValue = newValue.rawValue
+        }
+    }
     var priority: Bool
     var archived: Bool
     var reminderAt: Date
     
-    init(title: String, subTitle: String = "", category: CategoryModel, notes: String = "", startDate: Date = .now, dueDate: Date = .now, status: Int8 = 0, priority: Bool = false, reminderAt: Date = .now) {
+    init(title: String, subTitle: String = "", category: CategoryModel, notes: String = "", startDate: Date = .now, dueDate: Date = .now, statusValue: Int8 = 0, priority: Bool = false, reminderAt: Date = .now) {
         self.id = UUID()
         self.title = title
         self.subTitle = subTitle
@@ -37,7 +70,7 @@ import SwiftData
         self.dueDate = dueDate
         self.createdAt = .now
         self.updatedAt = .now
-        self.status = status
+        self.statusValue = statusValue
         self.priority = priority
         self.archived = false
         self.reminderAt = reminderAt
