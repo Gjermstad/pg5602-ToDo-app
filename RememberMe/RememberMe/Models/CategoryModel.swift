@@ -11,7 +11,7 @@ import SwiftData
 @Model final class CategoryModel
 {
     @Attribute(.unique) var id: UUID
-    var title: String
+    @Attribute(.unique) var title: String
     var categoryDescription: String
     var color: String
     var icon: String
