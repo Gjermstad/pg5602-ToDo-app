@@ -9,6 +9,23 @@ import SwiftUI
 
 struct TaskRow: View {
     var task: TaskModel
+  
+  var taskStatus: some View {
+    switch task.statusValue
+    {
+    case 0:
+      return Text("Status: " + task.status.title).foregroundStyle(.red)
+    case 1:
+      return Text("Status: " + task.status.title).foregroundStyle(.yellow)
+    case 2:
+      return Text("Status: " + task.status.title).foregroundStyle(.brown)
+    case 3:
+      return Text("Status: " + task.status.title).foregroundStyle(.green)
+    default:
+      return Text("")
+    }
+  
+  }
     
     var body: some View
     {
@@ -21,7 +38,7 @@ struct TaskRow: View {
                     .day().month().year()
                     .hour().minute()
                     .locale(Locale(identifier: "nb_NO"))))
-                Text("Status: " + task.status.title)
+                taskStatus
             }
             
             Spacer()
@@ -51,5 +68,8 @@ struct TaskRow: View {
 }
 
 #Preview {
-    TaskRow(task: exampleTask1).padding(30)
+    TaskRow(task: TaskModel(
+      title: "Rydd rommet",
+      priority: true,
+    )).padding(30)
 }
