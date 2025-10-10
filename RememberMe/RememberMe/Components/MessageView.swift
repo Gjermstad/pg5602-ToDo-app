@@ -17,13 +17,14 @@ struct MessageView: View
     {
       Image(systemName: "info.circle.fill")
         .font(.title)
-        .foregroundStyle(.white)
         .padding(10)
       Text(text)
         .padding(10)
+      Spacer()
     }
     .background(.green)
     .cornerRadius(10)
+    .padding(.horizontal, 20)
   }
 }
 
