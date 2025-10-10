@@ -10,59 +10,104 @@ import SwiftData
 
 struct TaskEdit: View
 {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var context
-    
-    var task: TaskModel
-    
-    @State private var title: String
-    @State private var priority: Bool
-    
-    init(task: TaskModel)
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.modelContext) private var context
+  
+  var task: TaskModel
+  
+  @State private var title: String
+  @State private var startDate: Date
+  @State private var dueDate: Date
+  @State private var statusValue: Int8
+  @State private var note: String
+  @State private var priority: Bool
+  
+  init(task: TaskModel)
+  {
+    self.task = task
+    _title = State(initialValue: task.title)
+    _priority = State(initialValue: task.priority)
+    _startDate = State(initialValue: task.startDate)
+    _dueDate = State(initialValue: task.dueDate)
+    _statusValue = State(initialValue: task.statusValue)
+    _note = State(initialValue: task.notes)
+  }
+  
+  var body: some View
+  {
+    NavigationStack
     {
-        self.task = task
-        _title = State(initialValue: task.title)
-        _priority = State(initialValue: task.priority)
-    }
-    
-    var body: some View
-    {
-        NavigationStack
+      Form
+      {
+        Section("Tittel")
         {
-            Form
-            {
-                Section("Tittel og undertittel") {
-                    TextField("Tittel", text: $title).bold()
-                }
-                
-                Toggle("Prioritert", systemImage: "light.beacon.max.fill", isOn: $priority)
-            }
-            .navigationTitle("Rediger oppgave")
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Avbryt")
-                    {
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction)
-                {
-                    Button("Lagre")
-                    {
-                        task.title = title
-                        task.priority = priority
-                        
-                        task.updatedAt = .now
-                        
-                        dismiss()
-                    }
-                }
-            }
+          TextField("Tittel", text: $title)
         }
+        
+        Section("Status")
+        {
+          Picker("Status", selection: $statusValue)
+          {
+            ForEach(Status.allCases)
+            {
+              status in
+              Text(status.title).tag(status)
+            }
+          }
+          .pickerStyle(.segmented)
+        }
+        
+        Section()
+        {
+          DatePicker("Start oppgaven", selection: $startDate)
+          DatePicker("Deadline", selection: $dueDate)
+        }
+        
+        Section("Notater om oppgaven")
+        {
+          TextEditor(text: $note)
+            .frame(minHeight: 80)
+        }
+        
+        Section()
+        {
+          Toggle("Prioritert", systemImage: "light.beacon.max.fill", isOn: $priority)
+        }
+      }
+      .navigationTitle("Rediger oppgave")
+      .navigationBarBackButtonHidden()
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button("Avbryt")
+          {
+            dismiss()
+          }
+        }
+        ToolbarItem(placement: .confirmationAction)
+        {
+          Button("Lagre")
+          {
+            task.title = title
+                      
+            task.statusValue = statusValue
+            
+            task.startDate = startDate
+            task.dueDate = dueDate
+            
+            task.notes = note
+            
+            task.priority = priority
+            
+            task.updatedAt = .now
+            
+            dismiss()
+          }
+        }
+      }
     }
+  }
 }
 
 #Preview {
-    TaskEdit(task: exampleTask1)
+  TaskEdit(task: exampleTask1)
 }
