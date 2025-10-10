@@ -14,7 +14,7 @@ struct MainView: View {
     @AppStorage("darkmode") private var darkMode: Bool = false
     
     @State private var showSheet = false
-    @State private var selectedTab = 0
+    @State private var selectedTab = 1
     @State private var seeded = false // for å ikke kjøre .task flere ganger i Preview
     
     var body: some View
@@ -38,7 +38,7 @@ struct MainView: View {
             
             if(newValue == 2) {
                 showSheet = true;
-                selectedTab = 0
+                selectedTab = 1
             }
         })
         .environment(\.colorScheme, darkMode ? .dark : .light) // Setter Dark Mode av/på
@@ -51,5 +51,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView().modelContainer(for: [TaskModel.self, CategoryModel.self], inMemory: false)
+    MainView().modelContainer(for: [TaskModel.self, CategoryModel.self])
 }

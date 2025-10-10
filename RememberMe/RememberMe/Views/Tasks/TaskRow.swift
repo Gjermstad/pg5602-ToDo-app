@@ -33,6 +33,20 @@ struct TaskRow: View {
                 }
             }
         }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true)
+      {
+        // Sveip fra høyre → merk task som fullført
+        Button
+        {
+          task.archived.toggle()
+          task.status = .taskFinished
+          task.updatedAt = .now
+        }
+      label:
+        {
+          Image(systemName: "checkmark.circle").tint(.green)
+        }
+      }
     }
 }
 

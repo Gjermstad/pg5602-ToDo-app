@@ -35,73 +35,71 @@ struct TaskEdit: View
   
   var body: some View
   {
-    NavigationStack
+    Form
     {
-      Form
+      Section("Tittel")
       {
-        Section("Tittel")
+        TextField("Tittel", text: $title)
+      }
+      
+      Section("Status")
+      {
+        Picker("Status", selection: $statusValue)
         {
-          TextField("Tittel", text: $title)
-        }
-        
-        Section("Status")
-        {
-          Picker("Status", selection: $statusValue)
+          ForEach(Status.allCases)
           {
-            ForEach(Status.allCases)
-            {
-              status in
-              Text(status.title).tag(status)
-            }
+            status in
+            Text(status.title).tag(status.rawValue)
           }
-          .pickerStyle(.segmented)
         }
-        
-        Section()
+        .pickerStyle(.segmented)
+      }
+      
+      Section()
+      {
+        DatePicker("Start oppgaven", selection: $startDate)
+        DatePicker("Deadline", selection: $dueDate)
+      }
+      
+      Section("Notater om oppgaven")
+      {
+        TextEditor(text: $note)
+          .frame(minHeight: 80)
+      }
+      
+      Section()
+      {
+        Toggle("Prioritert", systemImage: "light.beacon.max.fill", isOn: $priority)
+      }
+    }
+    .navigationTitle("Rediger oppgave")
+    .navigationBarTitleDisplayMode(.inline)
+    .navigationBarBackButtonHidden()
+    .toolbar {
+      ToolbarItem(placement: .cancellationAction) {
+        Button("Avbryt")
         {
-          DatePicker("Start oppgaven", selection: $startDate)
-          DatePicker("Deadline", selection: $dueDate)
-        }
-        
-        Section("Notater om oppgaven")
-        {
-          TextEditor(text: $note)
-            .frame(minHeight: 80)
-        }
-        
-        Section()
-        {
-          Toggle("Prioritert", systemImage: "light.beacon.max.fill", isOn: $priority)
+          dismiss()
         }
       }
-      .navigationTitle("Rediger oppgave")
-      .navigationBarBackButtonHidden()
-      .toolbar {
-        ToolbarItem(placement: .cancellationAction) {
-          Button("Avbryt")
-          {
-            dismiss()
-          }
-        }
-        ToolbarItem(placement: .confirmationAction)
+      ToolbarItem(placement: .confirmationAction)
+      {
+        Button("Lagre")
         {
-          Button("Lagre")
-          {
-            task.title = title
-                      
-            task.statusValue = statusValue
-            
-            task.startDate = startDate
-            task.dueDate = dueDate
-            
-            task.notes = note
-            
-            task.priority = priority
-            
-            task.updatedAt = .now
-            
-            dismiss()
-          }
+          task.title = title
+          
+          task.statusValue = statusValue
+          
+          task.startDate = startDate
+          task.dueDate = dueDate
+          
+          task.notes = note
+          
+          task.priority = priority
+          
+          task.updatedAt = .now
+          
+          dismiss()
         }
       }
     }

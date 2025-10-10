@@ -10,42 +10,43 @@ import SwiftData
 
 struct TaskView: View
 {
-    @Query private var tasks: [TaskModel]
+  @Query(sort: \TaskModel.dueDate) private var tasks: [TaskModel]
+  
+  var body: some View
+  {
+    let filteredTasks = tasks.filter{!$0.archived}
     
-    var body: some View
+    NavigationStack
     {
-        let filteredTasks = tasks.filter{!$0.archived}
-        
-        NavigationStack
+      Group
+      {
+        if(filteredTasks.isEmpty)
         {
-            Group
-            {
-                if(filteredTasks.isEmpty)
-                {
-                    EmptyView()
-                }
-                else
-                {
-                    List
-                    {
-                        ForEach(filteredTasks) { task in
-                            NavigationLink
-                            {
-                                TaskEdit(task: task)
-                            }
-                            label:
-                            {
-                                TaskRow(task: task)
-                            }
-                        }
-                    }
-                }
-            }
-            .navigationTitle("Oppgaver")
+          EmptyView()
         }
+        else
+        {
+          List
+          {
+            ForEach(filteredTasks)
+            { task in
+              NavigationLink
+              {
+                TaskEdit(task: task)
+              }
+            label:
+              {
+                TaskRow(task: task)
+              }
+            }
+          }
+        }
+      }
+      .navigationTitle("Oppgaver")
     }
+  }
 }
 
 #Preview {
-    TaskView().modelContainer(for: [TaskModel.self, CategoryModel.self])
+  TaskView().modelContainer(for: [TaskModel.self, CategoryModel.self])
 }
