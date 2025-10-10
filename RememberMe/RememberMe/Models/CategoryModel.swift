@@ -5,6 +5,8 @@
 //  Created by Kenneth André Bettum Gjermstad on 02/10/2025.
 //
 
+// IKKE I BRUK - JEG KLARTE IKKE Å IMPLEMENTERE KATEGORIER SLIK JEG FØRST TENKTE OG GIKK BORT FRA DET
+
 import Foundation
 import SwiftData
 
@@ -22,8 +24,6 @@ import SwiftData
     var createdAt: Date
     var updatedAt: Date
     
-    // VIKTIG: .cascade pga. mandatory inverse på TaskModel.category
-    @Relationship(deleteRule: .cascade, inverse: \TaskModel.category)
     var tasks: [TaskModel]?
     
     init(title: String, categoryDescription: String = "", color: String = "blue", icon: String = "list.bullet") {

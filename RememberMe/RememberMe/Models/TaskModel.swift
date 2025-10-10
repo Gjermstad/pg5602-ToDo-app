@@ -35,10 +35,6 @@ enum Status: Int8, CaseIterable, Identifiable
     var title: String
     var subTitle: String
     
-    // VIKTIG: mandatory (ikke-optional)
-    @Relationship(inverse: \CategoryModel.tasks)
-    var category: CategoryModel
-    
     var notes: String
     
     var startDate: Date
@@ -64,11 +60,10 @@ enum Status: Int8, CaseIterable, Identifiable
     var archived: Bool
     var reminderAt: Date
     
-    init(title: String, subTitle: String = "", category: CategoryModel, notes: String = "", startDate: Date = .now, dueDate: Date = .now, statusValue: Int8 = 0, priority: Bool = false, reminderAt: Date = .now) {
+    init(title: String, subTitle: String = "", notes: String = "", startDate: Date = .now, dueDate: Date = .now, statusValue: Int8 = 0, priority: Bool = false, reminderAt: Date = .now) {
         self.id = UUID()
         self.title = title
         self.subTitle = subTitle
-        self.category = category
         self.notes = notes
         self.startDate = startDate
         self.dueDate = dueDate
@@ -81,13 +76,9 @@ enum Status: Int8, CaseIterable, Identifiable
     }
 }
 
-// En falsk default-kategori som jeg kan bruke til eksempelTask1 i Previews
-let defaultCategory = CategoryModel(title: "default")
-
 let exampleTask1 = TaskModel(
     title: "Test: Rydd rommet",
     subTitle: "Mamma har mast hele uken",
-    category: defaultCategory,
     notes: "Planen er at jeg skal starte med å kaste alt på sengen, så legger jeg det i en søppelsekk og kaster det inn i kottet. Mamma ser aldri der, må bare vente til hun drar bort.",
     priority: true
 )

@@ -13,11 +13,7 @@ struct TaskAdd: View
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     
-    // Henter alle tilgjengelige kategorier fra databasen
-    @Query(sort: \CategoryModel.title) var categories: [CategoryModel]
-    
     @State private var title = ""
-    @State private var selectedCategoryTitle: String = "default"
     @State private var startDate: Date = .now
     @State private var dueDate: Date = .now
     @State private var statusValue: Int8 = 0
@@ -30,29 +26,11 @@ struct TaskAdd: View
     {
         NavigationStack
         {
-            let visibleCategories = categories.filter{!$0.archived}
-            
             Form
             {
                 Section()
                 {
                     TextField("Tittel", text: $title)
-                    
-                    // Om det ikke er lagd egne kategorier vises ikke valget og "default" settes
-                    if (categories.count > 1)
-                    {
-                        Picker("Velg kategori", selection: $selectedCategoryTitle)
-                        {
-                            ForEach(visibleCategories)
-                            {
-                                category in
-                                if(category.title != "default")
-                                {
-                                    Text(category.title).tag(category.title)
-                                }
-                            }
-                        }
-                    }
                 }
                 
                 Section("Status")
@@ -96,17 +74,10 @@ struct TaskAdd: View
                 ToolbarItem(placement: .confirmationAction)
                 {
                     Button("Lagre") {
-                        let chosenCategory = categories.first{$0.title == selectedCategoryTitle}
-                        let category = chosenCategory ?? {
-                            let c = CategoryModel(title: "default")
-                            context.insert(c)
-                            return c
-                        }()
                         
-                        let newTask = TaskModel(title: title, category: category)
+                      let newTask = TaskModel(title: title)
                         
                         newTask.title = title
-                        newTask.category = category
                         
                         newTask.statusValue = statusValue
                         
