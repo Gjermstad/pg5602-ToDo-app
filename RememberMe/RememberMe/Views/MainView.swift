@@ -47,36 +47,6 @@ struct MainView: View {
             // View for å legge til ny oppgave vises som modal istedenfor fullskjerm
             TaskAdd()
         }
-        .task {
-            await ensureDefaultCategoryExists()
-        }
-    }
-    
-    // Her fikk jeg hjelp av ChatGPT for å sikre at det er en kategori til å starte med
-    private func ensureDefaultCategoryExists() async {
-        do {
-            guard !seeded else { return }
-            // 1) Sjekk om noe finnes (du kan også filtrere på title == "default")
-            var descriptor = FetchDescriptor<CategoryModel>()
-            descriptor.fetchLimit = 1
-            // Valgfritt: sjekk spesifikt etter "default" så du ikke dupliserer
-            descriptor.predicate = #Predicate { $0.title == "default" }
-
-            let existing = try context.fetch(descriptor)
-            guard existing.isEmpty else {
-                seeded = true
-                return
-            }
-
-            // 2) Sett inn én kategori
-            context.insert(CategoryModel(title: "default"))
-
-            // 3) Lagre
-            try context.save()
-            seeded = true
-        } catch {
-            print("Seeding-feil:", error.localizedDescription)
-        }
     }
 }
 
