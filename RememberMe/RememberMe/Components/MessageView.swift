@@ -7,12 +7,26 @@
 
 import SwiftUI
 
-struct MessageView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct MessageView: View
+{
+  var text: String
+  
+  var body: some View
+  {
+    HStack
+    {
+      Image(systemName: "info.circle.fill")
+        .font(.title)
+        .foregroundStyle(.white)
+        .padding(10)
+      Text(text)
+        .padding(10)
     }
+    .background(.green)
+    .cornerRadius(10)
+  }
 }
 
 #Preview {
-    MessageView()
+  MessageView(text: "Dette er en eksempeltekst jeg kan sende inn.")
 }
